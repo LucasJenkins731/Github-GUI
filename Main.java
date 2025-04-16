@@ -4,6 +4,9 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 import java.awt.Graphics;
+import git.tools.client.GitSubprocessClient;
+import github.tools.client.GitHubApiClient;
+import github.tools.responseObjects.*;
 
 
 public class Main {
