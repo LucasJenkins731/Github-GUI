@@ -45,7 +45,8 @@ public class Main {
 		buttonPanel.add(actionedButton("Add", " ", buttonListener));
 		buttonPanel.add(actionedButton("Commit", "Simply write your commit message in the text field.", buttonListener));
 		buttonPanel.add(actionedButton("Mirror", " ", buttonListener));
-		
+		//buttonPanel.add(actionedButton("Push", " ", buttonListener));
+		//buttonPanel.add(actionedButton("Get Link", " ", buttonListener));
 
 		userPanel = new JPanel();
 		userPanel.setLayout(new BorderLayout());
@@ -136,6 +137,17 @@ public class Main {
 				case "Mirror":
 				System.out.println("Mirror button pressed.");
 				break;
+
+				/*
+				 * Idea for pushing initial commit
+				 * system.out.println("Pushing initial commit");
+				 * String push = gitSubprocessClient.gitPush("master");
+				 */
+
+				/*
+				 * Idea for URL
+				 * system.out.println("Repo link: https://github.com/" + username + "/" + reponame);
+				 */
 			}
 		}		
 	}
