@@ -53,7 +53,9 @@ public class Main {
 		buttonPanel.add(actionedButton("Add", " ", buttonListener));
 		buttonPanel.add(actionedButton("Commit", "Simply write your commit message in the text field.", buttonListener));
 		buttonPanel.add(actionedButton("Mirror", " ", buttonListener));
-		
+		buttonPanel.add(actionedButton("Initial Commit", " ", buttonListener));
+		//buttonPanel.add(actionedButton("Push", " ", buttonListener));
+		//buttonPanel.add(actionedButton("Get Link", " ", buttonListener));
 
 		userPanel = new JPanel();
 		userPanel.setLayout(new BorderLayout());
@@ -131,22 +133,21 @@ public class Main {
 				break;
 				
 				case "Add":
-				System.out.println("Add button pressed.");
+				GitSubprocessClient gitSubprocessClient3 = new GitSubprocessClient(repoNameHolder.getRepoName());
+				String gitAddAll = gitSubprocessClient3.gitAddAll();
+				label.setText("All files added");
 				break;
 				
 				case "Commit":
 				GitSubprocessClient gitSubprocessClient2 = new GitSubprocessClient(repoNameHolder.getRepoName());
 				String commitMessage = textField.getText();
 				String commit = gitSubprocessClient2.gitCommit(commitMessage);
+				String push = gitSubprocessClient2.gitPush("master");
 				label.setText("<html>"+ commit + "</html>");
 				break;
 				
 				case "Mirror":
-
 				Scanner scan= new Scanner(System.in);
-        
-
-
 				//getting information to make the repo
 		
 					System.out.print("Enter the name of the reposiory: ");
@@ -182,17 +183,25 @@ public class Main {
 					//setting the repo to origin
 					GitSubprocessClient gitSubprocessClient1 = new GitSubprocessClient(localRepoPath);
 		
-		
-			
 				 //create gihub repo
 		
 				String gitRemoteAdd = gitSubprocessClient1.gitRemoteAdd("origin", createRepoResponse.getUrl());
 		
 				System.out.println("Mirroring to GitHub complete. Check your repository at: " + createRepoResponse.getUrl());
+				System.out.println("Mirror button pressed.");
+				
+				break;
+
+				case "Initial Commit":
+				GitSubprocessClient gitSubprocessClient4 = new GitSubprocessClient(repoNameHolder.getRepoName());
+				gitAddAll = gitSubprocessClient4.gitAddAll();
+				commit = gitSubprocessClient4.gitCommit("Initial commit");
+				push = gitSubprocessClient4.gitPush("master");
+				label.setText("Initial commit has been created.");
+				break;
 			}
 				
 				
-				System.out.println("Mirror button pressed.");
 		}		
 	}
 }
