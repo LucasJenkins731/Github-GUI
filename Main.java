@@ -54,10 +54,10 @@ public class Main {
 
 		buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout());
-		buttonPanel.add(actionedButton("Credentials", "", buttonListener));
+		//buttonPanel.add(actionedButton("Credentials", "", buttonListener));
 		buttonPanel.add(actionedButton("Repo-ify", "Make sure that the absolute path is not enclosed within quotation marks.", buttonListener));
-		buttonPanel.add(actionedButton("Add", " ", buttonListener));
-		buttonPanel.add(actionedButton("Commit", "Simply write your commit message in the text field.", buttonListener));
+		//buttonPanel.add(actionedButton("Add", " ", buttonListener));
+		//buttonPanel.add(actionedButton("Commit", "Simply write your commit message in the text field.", buttonListener));
 		buttonPanel.add(actionedButton("Mirror", "Enter the repository name and press the button.", buttonListener));
         buttonPanel.add(actionedButton("Initial Commit", " ", buttonListener));
 
@@ -204,7 +204,8 @@ public class Main {
 				//creating the repo in Github
 				RequestParams requestParams = new RequestParams();
 				requestParams.addParam("name", nameOfRepo); // name of repo
-				requestParams.addParam(descriptionRepo, "this is a new repo"); // repo description
+				requestParams.addParam("description", descriptionRepo);
+				//requestParams.addParam(descriptionRepo, "this is a new repo"); // repo description
 				requestParams.addParam("private", privateRepoBoolean);
 
 				CreateRepoResponse createRepoResponse = gitHubApiClient.createRepo(requestParams);
