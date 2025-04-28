@@ -13,6 +13,14 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import github.tools.client.RequestParams;
+
+
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+
 
 // the line "myLabel.setText("<html>"+ myString +"</html>")" and all similar lines were taken/evolved upon from the below URL:
 // https://stackoverflow.com/questions/2420742/make-a-jlabel-wrap-its-text-by-setting-a-max-width
@@ -139,7 +147,50 @@ public class Main {
 				break;
 				
 				case "Mirror":
+				Scanner scan= new Scanner(System.in);
+				//getting information to make the repo
+		
+					System.out.print("Enter the name of the reposiory: ");
+					String nameOfRepo = scan.nextLine();
+					
+		
+					System.out.print("Enter the description of your repository (optional): ");
+					String descripOfRepo = scan.nextLine();
+		
+					System.out.print("Is your repository private? (Yes or No): ");
+					String privRepoStr = scan.nextLine().toUpperCase();
+		
+					boolean privRepo = privRepoStr.equalsIgnoreCase("YES");
+		
+		
+					GitHubApiClient gitHubApiClient = new GitHubApiClient(username, token);
+		
+		
+					//get the path to the repo
+					System.out.print("Enter the path to your local git repository: ");
+					String localRepoPath =  scan.nextLine();
+					File localRepo = new File(localRepoPath);
+					if (!localRepo.exists() || !localRepo.isDirectory() || !new File(localRepo, ".git").exists()){
+						System.err.println("Error: Invalid local respository path. Please re-enter and make sure you are entering a valid Git repository directory.");
+						return;
+					}
+		
+					//creating the repo in Github
+					RequestParams requestParams = new RequestParams();
+					requestParams.addParam("name", nameOfRepo); // name of repo
+					CreateRepoResponse createRepoResponse = gitHubApiClient.createRepo(requestParams);
+		
+					//setting the repo to origin
+					GitSubprocessClient gitSubprocessClient1 = new GitSubprocessClient(localRepoPath);
+		
+				 //create gihub repo
+		
+				String gitRemoteAdd = gitSubprocessClient1.gitRemoteAdd("origin", createRepoResponse.getUrl());
+		
+				System.out.println("Mirroring to GitHub complete. Check your repository at: " + createRepoResponse.getUrl());
 				System.out.println("Mirror button pressed.");
+				
+				
 				break;
 
 				case "Initial Commit":
@@ -150,6 +201,8 @@ public class Main {
 				label.setText("Initial commit has been created.");
 				break;
 			}
+				
+				
 		}		
 	}
 }
