@@ -45,6 +45,7 @@ public class Main {
 		buttonPanel.add(actionedButton("Add", " ", buttonListener));
 		buttonPanel.add(actionedButton("Commit", "Simply write your commit message in the text field.", buttonListener));
 		buttonPanel.add(actionedButton("Mirror", " ", buttonListener));
+		buttonPanel.add(actionedButton("Initial Commit", " ", buttonListener));
 		//buttonPanel.add(actionedButton("Push", " ", buttonListener));
 		//buttonPanel.add(actionedButton("Get Link", " ", buttonListener));
 
@@ -124,13 +125,16 @@ public class Main {
 				break;
 				
 				case "Add":
-				System.out.println("Add button pressed.");
+				GitSubprocessClient gitSubprocessClient3 = new GitSubprocessClient(repoNameHolder.getRepoName());
+				String gitAddAll = gitSubprocessClient3.gitAddAll();
+				label.setText("All files added");
 				break;
 				
 				case "Commit":
 				GitSubprocessClient gitSubprocessClient2 = new GitSubprocessClient(repoNameHolder.getRepoName());
 				String commitMessage = textField.getText();
 				String commit = gitSubprocessClient2.gitCommit(commitMessage);
+				String push = gitSubprocessClient2.gitPush("master");
 				label.setText("<html>"+ commit + "</html>");
 				break;
 				
@@ -138,16 +142,13 @@ public class Main {
 				System.out.println("Mirror button pressed.");
 				break;
 
-				/*
-				 * Idea for pushing initial commit
-				 * system.out.println("Pushing initial commit");
-				 * String push = gitSubprocessClient.gitPush("master");
-				 */
-
-				/*
-				 * Idea for URL
-				 * system.out.println("Repo link: https://github.com/" + username + "/" + reponame);
-				 */
+				case "Initial Commit":
+				GitSubprocessClient gitSubprocessClient4 = new GitSubprocessClient(repoNameHolder.getRepoName());
+				gitAddAll = gitSubprocessClient4.gitAddAll();
+				commit = gitSubprocessClient4.gitCommit("Initial commit");
+				push = gitSubprocessClient4.gitPush("master");
+				label.setText("Initial commit has been created.");
+				break;
 			}
 		}		
 	}

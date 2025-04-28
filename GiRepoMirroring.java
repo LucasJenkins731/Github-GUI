@@ -61,7 +61,6 @@ public class GiRepoMirroring {
             //setting the repo to origin
             GitSubprocessClient gitSubprocessClient = new GitSubprocessClient(localRepoPath);
 
-
     
          //create gihub repo
 
