@@ -12,6 +12,8 @@ Under the log, the user will enter their inputs into the text box. The user will
 ## Buttons
 The GUI houses multiple buttons that allow the user to create and use their repo. Each button has its own use case that will help the user create and use their repo efficiently and effectively.
 
+![Image](https://github.com/user-attachments/assets/f716a698-cffa-49ec-b859-5f2f448456e2)
+
 ### Repo-ify
 Creates the initial repo in the user's computer. The user will input the file path where they want their local repo to be created. This acts as "git init".
 
