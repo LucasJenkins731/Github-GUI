@@ -2,7 +2,7 @@
 GitHub-GUI allows a user to create a Git repo and push it to right to GitHub.
 
 ## Getting started
-In the terminal, the user must provide their username and token. Users must provide this information to continue to use the GUI. Without any user info, the GUI will not function as intended.
+To run the program, create a clone or download the repo and run the Main.java file. Once running in the terminal, the user must provide their username and token. Users must provide this information to continue to use the GUI. Without any user info, the GUI will not function as intended. Once the information is entered, the GUI will be open and will be ready to use.
 
 ## Working with the GUI
 
