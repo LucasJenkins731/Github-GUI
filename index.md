@@ -1,15 +1,15 @@
-# Github-GUI
+# **Github-GUI**
 GitHub-GUI allows a user to create a Git repo, and push it to right to GitHub.
 
-## Getting started
+## **Getting started**
 In the terminal, the user must provide their username and token. Users must provide this information to continue to use the GUI. Without any user info, the GUI will not open.
 
-# Working with the GUI
+## **Working with the GUI**
 
-## Inputs
+### Inputs
 Under the log, the user will enter their inputs into the text box. The user will enter inputs for the buttons that require input from the user to work.
 
-## Buttons
+### Buttons
 The GUI houses multiple buttons that allow the user to create and use their repo. Each button has its own use case that will help the user create and use their repo efficiently and effectively.
 
 ![Image](https://github.com/user-attachments/assets/f716a698-cffa-49ec-b859-5f2f448456e2)
