@@ -41,3 +41,6 @@ https://csc109.github.io/GitHubApiClient/methods-overview
 
 How to create your GitHub token:
 https://csc109.github.io/GitHubApiClient/access-token
+
+Website on how to use GUI:
+https://lucasjenkins731.github.io/Github-GUI/
