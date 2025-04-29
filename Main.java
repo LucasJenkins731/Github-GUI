@@ -1,6 +1,7 @@
 import javax.swing.*;
 import org.w3c.dom.Text;
 import github.tools.client.GitHubApiClient;
+import github.tools.client.RequestParams;
 import git.tools.client.GitSubprocessClient;
 import github.tools.client.GitHubApiClient;
 import github.tools.responseObjects.*;
@@ -23,14 +24,21 @@ public class Main {
 	String username, token;
 	RepoNameHolder repoNameHolder;
 	
-	public String getUsername(){
+
+
+	public String getUsername() {
 		return username;
 	}
-	public String getToken(){
+	
+	public String getToken() {
 		return token;
 	}
 
-    public Main() throws IOException {
+    public Main(String username, String token) throws IOException {
+		this.username = username;
+		this.token = token;
+		GitHubApiClient gitHubApiClient = new GitHubApiClient(username, token);
+		
 		frame = new JFrame();
 		
 		
@@ -45,15 +53,17 @@ public class Main {
 		JTextField textField = new JTextField("Please enter your input and then click on its corresponding button to submit.");
 		repoNameHolder = new RepoNameHolder(" ");
 
-		ButtonListener buttonListener = new ButtonListener(button, label, textField, repoNameHolder);
+		ButtonListener buttonListener = new ButtonListener(button, label, textField, repoNameHolder, username, token);
 
 		buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout());
+		buttonPanel.add(actionedButton("Credentials", "", buttonListener));
 		buttonPanel.add(actionedButton("Repo-ify", "Make sure that the absolute path is not enclosed within quotation marks.", buttonListener));
 		buttonPanel.add(actionedButton("Add", " ", buttonListener));
 		buttonPanel.add(actionedButton("Commit", "Simply write your commit message in the text field.", buttonListener));
-		buttonPanel.add(actionedButton("Mirror", " ", buttonListener));
-		
+		buttonPanel.add(actionedButton("Mirror", "Enter the repository name and press the button.", buttonListener));
+        buttonPanel.add(actionedButton("Initial Commit", " ", buttonListener));
+
 
 		userPanel = new JPanel();
 		userPanel.setLayout(new BorderLayout());
@@ -87,13 +97,12 @@ public class Main {
 				System.out.println("Please enter your GitHub token.");
 				token = userInput.nextLine();
 				
-				GitHubApiClient gitHubApiClient = new GitHubApiClient(username, token);
 			}
 		} catch(IllegalArgumentException e) {
             System.out.println("Wrong type of argument.");
         }
 
-        new Main();
+        new Main(username, token);
     }
 
 	static JButton actionedButton(String text, String tooltip, ActionListener listener) {
@@ -104,23 +113,39 @@ public class Main {
 		return button;
 	}
 
+
 	public class ButtonListener implements ActionListener {
 		private JButton button;
 		private JLabel label;
 		RepoNameHolder repoNameHolder;
 		private JTextField textField;
+		private String username, token;
+		GitHubApiClient gitHubApiClient;
 
-		public ButtonListener(JButton button, JLabel label, JTextField textField, RepoNameHolder repoNameHolder) {
+
+		public ButtonListener(JButton button, JLabel label, JTextField textField, RepoNameHolder repoNameHolder, String username, String token) {
 			this.button = button;
 			this.label = label;
 			this.textField = textField;
 			this.repoNameHolder = new RepoNameHolder(" ");
+			this.username = username;
+			this.token = token;
+		}
+
+		public String getUsername() {
+			return username;
 		}
 		
+		public String getToken() {
+			return token;
+		}
+		
+
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
 			switch(e.getActionCommand()) {
+				
 				case "Repo-ify":
 				// Turn a project on a user's computer into a Git repo
 				String repoPath = textField.getText();
@@ -134,23 +159,75 @@ public class Main {
 				System.out.println("Add button pressed.");
 				break;
 				
+                case "Initial Commit":
+				GitSubprocessClient gitSubprocessClient4 = new GitSubprocessClient(repoNameHolder.getRepoName());
+				String gitAddAll = gitSubprocessClient4.gitAddAll();
+				String commit = gitSubprocessClient4.gitCommit("Initial commit");
+				String push = gitSubprocessClient4.gitPush("master");
+				label.setText("Initial commit has been created.");
+				break;
+
 				case "Commit":
 				GitSubprocessClient gitSubprocessClient2 = new GitSubprocessClient(repoNameHolder.getRepoName());
 				String commitMessage = textField.getText();
-				String commit = gitSubprocessClient2.gitCommit(commitMessage);
-				label.setText("<html>"+ commit + "</html>");
+				String commit2 = gitSubprocessClient2.gitCommit(commitMessage);
+				label.setText("<html>"+ commit2 + "</html>");
 				break;
 				
 				case "Mirror":
-					try {
-						GiRepoMirroring.main(null);
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				System.out.println("Mirror button pressed.");
-				break;
+
+				GitHubApiClient gitHubApiClient = new GitHubApiClient(getUsername(), getToken());
+
+				String userInput = textField.getText();
+				String[] userInfo = userInput.split(" ");
+				for (String s : userInfo) {
+					System.out.println(s);
+				}
+
+                String nameOfRepo = userInfo[0];
+
+                String descriptionRepo = userInfo[1];
+
+                String privateRepoBoolean = userInfo[2];
+
+                String localRepoPath = repoNameHolder.getRepoName();
+
+                boolean privateRepo = privateRepoBoolean.equalsIgnoreCase("YES");
+				
+	
+				// get the path to the repo
+				// System.out.println("Enter the path to your local git repository and press the mirror button.");
+				// String localRepoPath = textField.getText();
+				File localRepo = new File(localRepoPath);
+				if (!localRepo.exists() || !localRepo.isDirectory() || !new File(localRepo, ".git").exists()){
+					System.err.println("Error: Invalid local repository path. Please re-enter and make sure you are entering a valid Git repository directory.");
+					return;
+				}
+	
+				//creating the repo in Github
+				RequestParams requestParams = new RequestParams();
+				requestParams.addParam("name", nameOfRepo); // name of repo
+				requestParams.addParam(descriptionRepo, "this is a new repo"); // repo description
+				requestParams.addParam("private", privateRepoBoolean);
+
+				CreateRepoResponse createRepoResponse = gitHubApiClient.createRepo(requestParams);
+	
+				// setting the repo to origin
+				GitSubprocessClient gitSubprocessClient3 = new GitSubprocessClient(localRepoPath);
+	
+	
+		
+			 //create gihub repo
+	
+			 try {
+				String gitRemoteAdd = gitSubprocessClient3.gitRemoteAdd("origin", createRepoResponse.getUrl());
+				} catch (Exception ex) {
+					System.err.println("Error during GitHub mirroring: " + ex.getMessage());
+					ex.printStackTrace();
+				}
+	
+			label.setText("Mirroring to GitHub complete. Check your repository at: " + createRepoResponse.getUrl());
 			}
-		}		
+		}
 	}
-}
+}	
