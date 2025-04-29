@@ -1,3 +1,5 @@
+// Unused Mirroring Class
+
 //make imports
 import github.tools.client.GitHubApiClient;
 import github.tools.client.RequestParams;
@@ -14,7 +16,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-public class GiRepoMirroring {
+public class GitRepoMirroring {
     
     public static void main (String[] args) throws IOException{
 
@@ -78,5 +80,4 @@ public class GiRepoMirroring {
 
         System.out.println("Mirroring to GitHub complete. Check your repository at: " + createRepoResponse.getUrl());
     }
-
 }
