@@ -2,7 +2,7 @@
 GitHub-GUI allows a user to create a Git repo, and push it to right to GitHub.
 
 ## Getting started
-In the terminal, the user must provide their username and token. Logging in allows the repo to be pushed up to GitHub and will not work without it.
+In the terminal, the user must provide their username and token. Users must provide this information to continue to use the GUI. Without any user info, the GUI will not open.
 
 # Working with the GUI
 The GUI houses multiple buttons that allow the user to create and use their repo.
