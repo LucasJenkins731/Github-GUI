@@ -23,6 +23,8 @@ public class Main {
     JPanel panel, userPanel, buttonPanel;
 	String username, token;
 	RepoNameHolder repoNameHolder;
+	
+
 
 	public String getUsername() {
 		return username;
@@ -38,6 +40,7 @@ public class Main {
 		GitHubApiClient gitHubApiClient = new GitHubApiClient(username, token);
 		
 		frame = new JFrame();
+		
 		
 
         BufferedImage image = ImageIO.read(new File("QUxMS Logo.png"));
@@ -176,7 +179,7 @@ public class Main {
 				GitHubApiClient gitHubApiClient = new GitHubApiClient(getUsername(), getToken());
 
 				String userInput = textField.getText();
-				String[] userInfo = userInput.split(" ");
+				String[] userInfo = userInput.split("/");
 				for (String s : userInfo) {
 					System.out.println(s);
 				}
@@ -204,8 +207,7 @@ public class Main {
 				//creating the repo in Github
 				RequestParams requestParams = new RequestParams();
 				requestParams.addParam("name", nameOfRepo); // name of repo
-				requestParams.addParam("description", descriptionRepo);
-				//requestParams.addParam(descriptionRepo, "this is a new repo"); // repo description
+				requestParams.addParam("description", descriptionRepo); // repo description
 				requestParams.addParam("private", privateRepoBoolean);
 
 				CreateRepoResponse createRepoResponse = gitHubApiClient.createRepo(requestParams);
