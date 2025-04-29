@@ -1,19 +1,17 @@
 import javax.swing.*;
-import org.w3c.dom.Text;
-import github.tools.client.GitHubApiClient;
-import github.tools.client.RequestParams;
-import git.tools.client.GitSubprocessClient;
-import github.tools.client.GitHubApiClient;
-import github.tools.responseObjects.*;
-import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
+import java.awt.FlowLayout;
+import java.awt.BorderLayout;
+import java.util.Scanner;
 import java.io.File;
 import java.io.IOException;
-import java.util.Scanner;
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import github.tools.responseObjects.*;
+import github.tools.client.RequestParams;
+import github.tools.client.GitHubApiClient;
+import git.tools.client.GitSubprocessClient;
 
 // the line "myLabel.setText("<html>"+ myString +"</html>")" and all similar lines were taken/evolved upon from the below URL:
 // https://stackoverflow.com/questions/2420742/make-a-jlabel-wrap-its-text-by-setting-a-max-width
@@ -23,16 +21,6 @@ public class Main {
     JPanel panel, userPanel, buttonPanel;
 	String username, token;
 	RepoNameHolder repoNameHolder;
-	
-
-
-	public String getUsername() {
-		return username;
-	}
-	
-	public String getToken() {
-		return token;
-	}
 
     public Main(String username, String token) throws IOException {
 		this.username = username;
@@ -42,7 +30,6 @@ public class Main {
 		frame = new JFrame();
 		
 		
-
         BufferedImage image = ImageIO.read(new File("QUxMS Logo.png"));
 		ImageIcon logo = new ImageIcon(image);
 		JLabel logoPicture = new JLabel(logo);
@@ -57,13 +44,16 @@ public class Main {
 
 		buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout());
-		//buttonPanel.add(actionedButton("Credentials", "", buttonListener));
 		buttonPanel.add(actionedButton("Repo-ify", "Make sure that the absolute path is not enclosed within quotation marks.", buttonListener));
-		//buttonPanel.add(actionedButton("Add", " ", buttonListener));
-		//buttonPanel.add(actionedButton("Commit", "Simply write your commit message in the text field.", buttonListener));
-		buttonPanel.add(actionedButton("Mirror", "Enter the repository name and press the button.", buttonListener));
+		buttonPanel.add(actionedButton("Mirror", "Enter your desired repo name, description, and Yes/No for privacy, all" + 
+											"separated by a slash (/) and press this button.", buttonListener));
         buttonPanel.add(actionedButton("Initial Commit", " ", buttonListener));
 
+		/* Unused buttons
+			buttonPanel.add(actionedButton("Credentials", "", buttonListener));
+			buttonPanel.add(actionedButton("Add", " ", buttonListener));
+			buttonPanel.add(actionedButton("Commit", "Simply write your commit message in the text field.", buttonListener));
+		*/
 
 		userPanel = new JPanel();
 		userPanel.setLayout(new BorderLayout());
@@ -83,6 +73,13 @@ public class Main {
 		frame.setLocationRelativeTo(null);
     }
 
+	public String getUsername() {
+		return username;
+	}
+	
+	public String getToken() {
+		return token;
+	}
 
     public static void main(String[] args) throws IOException {
 		final String EMPTYSTRING = " ";
@@ -98,6 +95,7 @@ public class Main {
 				token = userInput.nextLine();
 				
 			}
+
 		} catch(IllegalArgumentException e) {
             System.out.println("Wrong type of argument.");
         }
@@ -117,9 +115,9 @@ public class Main {
 	public class ButtonListener implements ActionListener {
 		private JButton button;
 		private JLabel label;
-		RepoNameHolder repoNameHolder;
 		private JTextField textField;
 		private String username, token;
+		RepoNameHolder repoNameHolder;
 		GitHubApiClient gitHubApiClient;
 
 
@@ -139,7 +137,6 @@ public class Main {
 		public String getToken() {
 			return token;
 		}
-		
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -147,7 +144,8 @@ public class Main {
 			switch(e.getActionCommand()) {
 				
 				case "Repo-ify":
-				// Turn a project on a user's computer into a Git repo
+
+				// Turn a project/directory on a user's computer into a Git repo
 				String repoPath = textField.getText();
 				repoNameHolder.setText(repoPath);
 				GitSubprocessClient gitSubprocessClient = new GitSubprocessClient(repoNameHolder.getRepoName());
@@ -155,25 +153,28 @@ public class Main {
 				label.setText("<html>"+ gitInit + "</html>");
 				break;
 				
-				case "Add":
-				System.out.println("Add button pressed.");
-				break;
+				// case "Add":
+				// System.out.println("Add button pressed.");
+				// break;
 				
+				// Adds all changed files, commits, and pushes to Github as the initial commit.
                 case "Initial Commit":
-				GitSubprocessClient gitSubprocessClient4 = new GitSubprocessClient(repoNameHolder.getRepoName());
-				String gitAddAll = gitSubprocessClient4.gitAddAll();
-				String commit = gitSubprocessClient4.gitCommit("Initial commit");
-				String push = gitSubprocessClient4.gitPush("master");
+
+				GitSubprocessClient gitSubprocessClient2 = new GitSubprocessClient(repoNameHolder.getRepoName());
+				String gitAddAll = gitSubprocessClient2.gitAddAll();
+				String commit = gitSubprocessClient2.gitCommit("Initial commit");
+				String push = gitSubprocessClient2.gitPush("master");
 				label.setText("Initial commit has been created.");
 				break;
 
-				case "Commit":
-				GitSubprocessClient gitSubprocessClient2 = new GitSubprocessClient(repoNameHolder.getRepoName());
-				String commitMessage = textField.getText();
-				String commit2 = gitSubprocessClient2.gitCommit(commitMessage);
-				label.setText("<html>"+ commit2 + "</html>");
-				break;
+				// case "Commit":
+				// GitSubprocessClient gitSubprocessClient2 = new GitSubprocessClient(repoNameHolder.getRepoName());
+				// String commitMessage = textField.getText();
+				// String commit2 = gitSubprocessClient2.gitCommit(commitMessage);
+				// label.setText("<html>"+ commit2 + "</html>");
+				// break;
 				
+				// Creates a repo on GitHub
 				case "Mirror":
 
 				GitHubApiClient gitHubApiClient = new GitHubApiClient(getUsername(), getToken());
@@ -198,6 +199,7 @@ public class Main {
 				// get the path to the repo
 				// System.out.println("Enter the path to your local git repository and press the mirror button.");
 				// String localRepoPath = textField.getText();
+
 				File localRepo = new File(localRepoPath);
 				if (!localRepo.exists() || !localRepo.isDirectory() || !new File(localRepo, ".git").exists()){
 					System.err.println("Error: Invalid local repository path. Please re-enter and make sure you are entering a valid Git repository directory.");
@@ -208,25 +210,23 @@ public class Main {
 				RequestParams requestParams = new RequestParams();
 				requestParams.addParam("name", nameOfRepo); // name of repo
 				requestParams.addParam("description", descriptionRepo); // repo description
-				requestParams.addParam("private", privateRepoBoolean);
+				requestParams.addParam("private", privateRepoBoolean); // if the repo is private/public
 
 				CreateRepoResponse createRepoResponse = gitHubApiClient.createRepo(requestParams);
 	
 				// setting the repo to origin
 				GitSubprocessClient gitSubprocessClient3 = new GitSubprocessClient(localRepoPath);
 	
+			 	// create github repo
 	
-		
-			 //create gihub repo
+				try {
+					String gitRemoteAdd = gitSubprocessClient3.gitRemoteAdd("origin", createRepoResponse.getUrl());
+					} catch (Exception ex) {
+						System.err.println("Error during GitHub mirroring: " + ex.getMessage());
+						ex.printStackTrace();
+					}
 	
-			 try {
-				String gitRemoteAdd = gitSubprocessClient3.gitRemoteAdd("origin", createRepoResponse.getUrl());
-				} catch (Exception ex) {
-					System.err.println("Error during GitHub mirroring: " + ex.getMessage());
-					ex.printStackTrace();
-				}
-	
-			label.setText("Mirroring to GitHub complete. Check your repository at: " + createRepoResponse.getUrl());
+				label.setText("Mirroring to GitHub complete. Check your repository at: " + createRepoResponse.getUrl());
 			}
 		}
 	}

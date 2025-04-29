@@ -13,5 +13,4 @@ public class RepoNameHolder {
     public void setText(String repoName) {
         this.repoName = repoName;
     }
-
 }
