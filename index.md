@@ -40,3 +40,4 @@ https://csc109.github.io/GitHubApiClient/
 https://csc109.github.io/GitHubApiClient/methods-overview
 
 How to create your GitHub token:
+https://csc109.github.io/GitHubApiClient/access-token
