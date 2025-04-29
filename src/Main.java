@@ -1,4 +1,6 @@
+package src;
 import javax.swing.*;
+
 import java.awt.FlowLayout;
 import java.awt.BorderLayout;
 import java.util.Scanner;
@@ -45,9 +47,9 @@ public class Main {
 		buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout());
 		buttonPanel.add(actionedButton("Repo-ify", "Make sure that the absolute path is not enclosed within quotation marks.", buttonListener));
-		buttonPanel.add(actionedButton("Mirror", "Enter your desired repo name, description, and Yes/No for privacy, all" + 
+		buttonPanel.add(actionedButton("Mirror", "Enter your desired repo name, description, and Yes/No for privacy, all " + 
 											"separated by a slash (/) and press this button.", buttonListener));
-        buttonPanel.add(actionedButton("Initial Commit", " ", buttonListener));
+        buttonPanel.add(actionedButton("Initial Commit", "This instantly adds, commits, and pushes to GitHub!", buttonListener));
 
 		/* Unused buttons
 			buttonPanel.add(actionedButton("Credentials", "", buttonListener));

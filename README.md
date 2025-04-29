@@ -1,6 +1,8 @@
 # Github-GUI
 GitHub-GUI allows a user to create a Git repo and push it to right to GitHub.
 
+GitHub Pages Link: https://lucasjenkins731.github.io/Github-GUI/
+
 ## Getting started
 In the terminal, the user must provide their username and token. Users must provide this information to continue to use the GUI. Without any user info, the GUI will not function as intended.
 
