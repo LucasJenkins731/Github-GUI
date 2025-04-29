@@ -25,7 +25,7 @@ This acts as creating a repo on GitHub and then connecting the local repo to the
 Example input for the Mirror function (in the textfield):
 MyRepoName/This is the description for my GitHub repository!/yes
 
-Link to a GitHub repo made with this program: https://github.com/WilsonC67/MyRepoName
+Link to a GitHub repo made with this program: https://github.com/WilsonC67/FolderProject4
 
 ### Initial commit
 Creates an initial commit to the repo that is instantly pushed to GitHub. This acts as multiple commands being used at the same time. First, all files are added to the repo (git add .). Then a commit is created with the message "Initial commit" (git commit -m "Initial commit"). Finally, the commit is pushed into the master branch of the repo (git push origin master).
