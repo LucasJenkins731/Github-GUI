@@ -1,4 +1,6 @@
+package src;
 import javax.swing.*;
+
 import java.awt.FlowLayout;
 import java.awt.BorderLayout;
 import java.util.Scanner;
