@@ -23,3 +23,4 @@ Creates a repo in GitHub that the user will be able to connect to. In the text b
 ### Initial commit
 Creates an initial commit to the repo that is instantly pushed to GitHub. This acts as multiple commands being used at the same time. First, all files are added to the repo (git add .). Then a commit is created with the message "Initial commit" (git commit -m "Initial commit"). Finally, the commit is pushed into the master branch of the repo (git push origin master).
 
+*Disclaimer: This application is solely a prototype and not yet meant for commercial use.*
